@@ -1,0 +1,36 @@
+export const mockProfile = {
+  username: 'BidMaster3000',
+  avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=BidMaster3000',
+  joinedDate: 'January 2025',
+  location: 'San Francisco, CA',
+  level: 12,
+  title: 'Auction Veteran',
+  xp: 8450,
+  xpToNext: 10000,
+  stats: {
+    partiesJoined: 47,
+    auctionsWon: 23,
+    totalBids: 342,
+    highestBid: 15000,
+  },
+  badges: [
+    { id: '1', name: 'First Victory', description: 'Won your first auction', icon: '🏆', earned: true },
+    { id: '2', name: 'High Roller', description: 'Placed a bid over $10,000', icon: '💎', earned: true },
+    { id: '3', name: 'Hot Streak', description: 'Won 5 auctions in a row', icon: '🔥', earned: true },
+    { id: '4', name: 'Quick Draw', description: 'Placed winning bid in last 10 seconds', icon: '⚡', earned: true },
+    { id: '5', name: 'Sniper Elite', description: 'Won 10 items with last-second bids', icon: '🔒', earned: false },
+    { id: '6', name: 'Party Legend', description: 'Reached level 20', icon: '🔒', earned: false },
+  ],
+  partyHistory: [
+    { id: '1', partyName: 'Vintage Camera Auction', date: 'Mar 10, 2026', itemsWon: 2, xpEarned: 450 },
+    { id: '2', partyName: 'Collectible Coins Party', date: 'Mar 5, 2026', itemsWon: 1, xpEarned: 320 },
+    { id: '3', partyName: 'Gaming Console Bonanza', date: 'Feb 28, 2026', itemsWon: 0, xpEarned: 180 },
+    { id: '4', partyName: 'Art Print Collection', date: 'Feb 22, 2026', itemsWon: 3, xpEarned: 680 },
+  ],
+  recentBids: [
+    { id: '1', item: 'Vintage Rolex Submariner', party: 'Luxury Watch Party', amount: 5200, status: 'won' as const, date: 'Mar 10, 2026' },
+    { id: '2', item: 'MacBook Pro M3 Max', party: 'Tech Gadgets Mega Auction', amount: 3100, status: 'outbid' as const, date: 'Mar 7, 2026' },
+    { id: '3', item: 'Limited Edition Sneakers', party: 'Sneakerhead Paradise', amount: 950, status: 'won' as const, date: 'Mar 3, 2026' },
+    { id: '4', item: 'Designer Watch', party: 'Luxury Watch Collection', amount: 4500, status: 'outbid' as const, date: 'Feb 25, 2026' },
+  ],
+};
