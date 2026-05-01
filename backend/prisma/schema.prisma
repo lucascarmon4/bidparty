@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -10,4 +5,123 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum PartyStatus {
+  upcoming
+  live
+  ended
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  xp           Int      @default(0)
+  avatarUrl    String?  @map("avatar_url")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  hostedParties      Party[]
+  partyRegistrations PartyRegistration[]
+  bids               Bid[]
+  chatMessages       ChatMessage[]
+  userBadges         UserBadge[]
+
+  @@map("users")
+}
+
+model Party {
+  id              String      @id @default(uuid())
+  title           String
+  category        String
+  hostUserId      String      @map("host_user_id")
+  scheduledAt     DateTime    @map("scheduled_at")
+  status          PartyStatus @default(upcoming)
+  maxParticipants Int         @map("max_participants")
+  coverImage      String?     @map("cover_image")
+  createdAt       DateTime    @default(now()) @map("created_at")
+
+  host          User                @relation(fields: [hostUserId], references: [id])
+  registrations PartyRegistration[]
+  items         Item[]
+  chatMessages  ChatMessage[]
+
+  @@map("parties")
+}
+
+model PartyRegistration {
+  userId       String   @map("user_id")
+  partyId      String   @map("party_id")
+  registeredAt DateTime @default(now()) @map("registered_at")
+
+  user  User  @relation(fields: [userId], references: [id])
+  party Party @relation(fields: [partyId], references: [id])
+
+  @@id([userId, partyId])
+  @@map("party_registrations")
+}
+
+model Item {
+  id            String  @id @default(uuid())
+  partyId       String  @map("party_id")
+  title         String
+  description   String?
+  imageUrl      String? @map("image_url")
+  startingBid   Float   @map("starting_bid")
+  positionOrder Int     @map("position_order")
+
+  party Party @relation(fields: [partyId], references: [id])
+  bids  Bid[]
+
+  @@map("items")
+}
+
+model Bid {
+  id       String   @id @default(uuid())
+  itemId   String   @map("item_id")
+  userId   String   @map("user_id")
+  amount   Float
+  placedAt DateTime @default(now()) @map("placed_at")
+
+  item Item @relation(fields: [itemId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("bids")
+}
+
+model ChatMessage {
+  id      String   @id @default(uuid())
+  partyId String   @map("party_id")
+  userId  String   @map("user_id")
+  content String
+  sentAt  DateTime @default(now()) @map("sent_at")
+
+  party Party @relation(fields: [partyId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@map("chat_messages")
+}
+
+model Badge {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String
+  iconUrl     String? @map("icon_url")
+
+  userBadges UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  userId    String   @map("user_id")
+  badgeId   String   @map("badge_id")
+  awardedAt DateTime @default(now()) @map("awarded_at")
+
+  user  User  @relation(fields: [userId], references: [id])
+  badge Badge @relation(fields: [badgeId], references: [id])
+
+  @@id([userId, badgeId])
+  @@map("user_badges")
 }
