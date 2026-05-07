@@ -30,6 +30,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+      - /app/generated
 
   frontend:
     build: ./frontend
